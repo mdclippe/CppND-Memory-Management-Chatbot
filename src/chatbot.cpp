@@ -30,6 +30,8 @@ ChatBot::ChatBot(std::string filename)
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
 }
 
+
+
 ChatBot::~ChatBot()
 {
     std::cout << "ChatBot Destructor" << std::endl;
@@ -45,6 +47,76 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+// copy constructor
+ChatBot::ChatBot (const ChatBot& source)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    _chatLogic = source._chatLogic;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _image = new wxBitmap(*source._image);
+}
+
+// copy assignment
+ChatBot& ChatBot::operator=(const ChatBot& source)
+{
+    std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+    if (this == &source) {
+        return *this;
+    }
+    if (_image != NULL)
+    {
+        delete _image;
+        _image = NULL;
+    }
+    _chatLogic = source._chatLogic;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _image = new wxBitmap(*source._image);
+    return *this;
+}
+
+// move constructor
+ChatBot::ChatBot(ChatBot&& source)
+{
+    std::cout << "ChatBot Move Constructor " << std::endl;
+    _chatLogic = source._chatLogic;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _image = source._image;
+    //invalidate source pointers as ownership is moved
+    source._chatLogic = nullptr;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._image = NULL;
+}
+
+// move assignement operator
+ChatBot& ChatBot::operator=(ChatBot&& source)
+{
+    std::cout << "ChatBot Move Assignment Operator" << std::endl;
+    if (this == &source) {
+        return *this;
+    }
+    // if there already was an image in this, delete it
+    if (_image != NULL)
+    {
+        delete _image;
+        _image = NULL;
+    }
+    _chatLogic = source._chatLogic;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _image = source._image;
+    //invalidate source pointers as ownership is moved
+    source._chatLogic = nullptr;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._image = NULL;
+    return *this;
+
+
+}
 ////
 //// EOF STUDENT CODE
 
